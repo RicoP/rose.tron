@@ -13,6 +13,9 @@ recording.json
 #Imgui
 imgui.ini
 
+#Blender
+*.blend?
+
 #VSCode
 .vscode/settings.json
 
