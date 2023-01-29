@@ -21,41 +21,6 @@
 #include <rose/world.h>
 
 Camera3D camera = { 0 };
-
-static Vector3 & operator+=(Vector3 & lhs, Vector3 rhs) {
-    lhs.x += rhs.x;
-    lhs.y += rhs.y;
-    lhs.z += rhs.z;
-    return lhs;
-}
-
-static Vector3 & operator-=(Vector3 & lhs, Vector3 rhs) {
-    lhs.x -= rhs.x;
-    lhs.y -= rhs.y;
-    lhs.z -= rhs.z;
-    return lhs;
-}
-
-static Vector3 & operator*=(Vector3 & lhs, float rhs) {
-    lhs.x *= rhs;
-    lhs.y *= rhs;
-    lhs.z *= rhs;
-    return lhs;
-}
-
-static Vector3 operator+(Vector3 lhs, Vector3 rhs) {
-    return lhs += rhs;
-}
-
-static Vector3 operator-(Vector3 lhs, Vector3 rhs) {
-    return lhs -= rhs;
-}
-
-static Vector3 operator*(Vector3 lhs, float rhs) {
-    return lhs *= rhs;
-}
-
-
 ROSE_EXPORT void postload() {
     World & world = rose::world::get<World>();
 
