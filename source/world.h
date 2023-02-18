@@ -10,7 +10,7 @@
 
 struct Bike {
   Matrix transform;
-  RaylibAssetModel bike = "bike.glb";
+  rose::RaylibAssetModel bike = "bike.glb";
   bool hero = false;
 
   int foo() { return 0; }
