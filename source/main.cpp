@@ -42,7 +42,6 @@ ROSE_EXPORT void update() {
     World & world = rose::world::get<World>();
 }
 
-
 // Draw a model with extended parameters
 void DrawModel(Model model, Matrix transform, Color tint)
 {
@@ -54,7 +53,7 @@ ROSE_EXPORT void draw() {
     World & world = rose::world::get<World>();
  
     ImguiSerializer serializer;
-    rose::ecs::serialize(world, serializer);
+    rose::serialize(world, serializer);
 
     {
         ClearBackground(SKYBLUE);
