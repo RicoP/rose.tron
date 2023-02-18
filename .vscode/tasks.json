@@ -94,6 +94,18 @@
         
         {
             "type": "shell",
+            "label": "Bye Bye",
+            "command": "echo",
+            "args": [
+                "OK!"
+            ],
+            "group": {
+                "kind": "build",
+            }
+        },
+        
+        {
+            "type": "shell",
             "label": "Rose Build",
             "command": "echo",
             "args": [
@@ -104,7 +116,7 @@
             },
                         
             "dependsOrder": "sequence",
-            "dependsOn": ["Rose Announce Start", "Rose Parse", "Rose Compile", "Rose Clean"],
+            "dependsOn": ["Rose Announce Start", "Rose Parse", "Rose Compile", "Rose Clean", "Bye Bye"],
             "group": {
                 "kind": "build",
                 "isDefault": true
