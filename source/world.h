@@ -24,5 +24,5 @@ inline int bar() { return 0; }
 
 
 struct World {
-  Bike bikes[4];
+  std::vector<Bike> bikes;
 };

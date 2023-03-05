@@ -20,6 +20,26 @@
 
 #include <rose/world.h>
 
+
+inline Vector2 vec(float x, float y) {
+    return Vector2{x,y};
+}
+
+inline Vector3 vec(float x, float y, float z) {
+    return Vector3{x,y,z};
+}
+
+inline Vector3 position(const Matrix & m) {
+    Vector3 v = Vector3 { m.m12, m.m13, m.m14 };
+    return v;
+}
+
+inline void position(Matrix & m, Vector3 v) {
+    m.m12 = v.x;
+    m.m13 = v.y;
+    m.m14 = v.z;
+}
+
 Camera3D camera = { 0 };
 ROSE_EXPORT void postload() {
     World & world = rose::world::get<World>();
@@ -58,21 +78,33 @@ ROSE_EXPORT void draw() {
     {
         ClearBackground(SKYBLUE);
 
+        auto pos = position(world.bikes[0].transform);
 
-        world.bikes[0].transform.m12 -= rose::input::stick().x;
-        world.bikes[0].transform.m13 -= rose::input::stick().y;
+        pos.x += rose::input::stick().x;
+        pos.y += rose::input::stick().y;
 
-        Vector3 position = Vector3 { world.bikes[0].transform.m12,  world.bikes[0].transform.m13,  world.bikes[0].transform.m14 };
-        camera.position =  position + Vector3 { 0.0f, 5.0f, 5.0f };
-        camera.target =  position;
+        camera.position = pos + Vector3 { 0.0f, -12.0f, 6.0f };
+        camera.target   = pos;
+
+        position(world.bikes[0].transform, pos);
 
         BeginMode3D(camera);
         {
+            for(int x = -20; x != 20; ++x) {
+                for(int y = -20; y != 20; ++y) {
+                    int w = x+y+1000;
+                    DrawCubeV(vec(x,y,-1), vec(1,1,1), (w % 2) == 0 ? BLACK : WHITE);
+                }
+            }
+            //DrawCubeV(position(world.bikes[0].transform), vec(1,1,1), RED);
             DrawModel(world.bikes[0].bike,  world.bikes[0].transform, WHITE);
-            DrawGrid(10, 1.0f);
         }
         EndMode3D();
     }
+}
+
+ROSE_EXPORT void ui() {
+    World & world = rose::world::get<World>();
 }
 
 ROSE_EXPORT void event(const rose::Event & ev) {

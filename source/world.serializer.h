@@ -210,14 +210,14 @@ inline rose::hash_value rose::hash(const World &o) {
 
 template <>
 struct rose::type_id<World> {
-    inline static rose::hash_value VALUE = 11909758945263842450ULL;
+    inline static rose::hash_value VALUE = 9056699606791894297ULL;
 };
 
 template <>
 inline const rose::reflection::TypeInfo & rose::reflection::get_type_info<World>() {
   static rose::reflection::TypeInfo info = {
     /*             unique_id */ rose::hash("World"),
-    /*           member_hash */ 11909758945263842450ULL,
+    /*           member_hash */ 9056699606791894297ULL,
     /*      memory_footprint */ sizeof(World),
     /*      memory_alignment */ 16,
     /*                  name */ "World",
