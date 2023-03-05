@@ -29,16 +29,42 @@ inline Vector3 vec(float x, float y, float z) {
     return Vector3{x,y,z};
 }
 
-inline Vector3 position(const Matrix & m) {
-    Vector3 v = Vector3 { m.m12, m.m13, m.m14 };
-    return v;
+namespace matrix {
+inline vector3 x(const Matrix & m) {
+    return vector(m.m0, m.m1, m.m2);
+}
+inline vector3 y(const Matrix & m) {
+    return vector(m.m4, m.m5, m.m6);
+}
+inline vector3 z(const Matrix & m) {
+    return vector(m.m8, m.m9, m.m10);
+}
+inline vector3 position(const Matrix & m) {
+    return vector(m.m12, m.m13, m.m14);
 }
 
-inline void position(Matrix & m, Vector3 v) {
+inline void x(Matrix & m, vector3 v) {
+    m.m0 = v.x;
+    m.m1 = v.y;
+    m.m2 = v.z;
+}
+inline void y(Matrix & m, vector3 v) {
+    m.m4 = v.x;
+    m.m5 = v.y;
+    m.m6 = v.z;
+}
+inline void z(Matrix & m, vector3 v) {
+    m.m8 = v.x;
+    m.m9 = v.y;
+    m.m10 = v.z;
+}
+inline void position(Matrix & m, vector3 v) {
     m.m12 = v.x;
     m.m13 = v.y;
     m.m14 = v.z;
 }
+}
+
 
 Camera3D camera = { 0 };
 ROSE_EXPORT void postload() {
@@ -78,15 +104,25 @@ ROSE_EXPORT void draw() {
     {
         ClearBackground(SKYBLUE);
 
-        auto pos = position(world.bikes[0].transform);
+        if(rose::input::stick() != vector(0,0)) {
+            auto forward = normalized(vector(rose::input::stick(), 0));
+            auto up = vector(0,0,1);
+            auto side = cross(forward, up);
+            auto pos = matrix::position(world.bikes[0].transform);
+            pos += forward * length(rose::input::stick());
 
-        pos.x += rose::input::stick().x;
-        pos.y += rose::input::stick().y;
-
-        camera.position = pos + Vector3 { 0.0f, -12.0f, 6.0f };
-        camera.target   = pos;
-
-        position(world.bikes[0].transform, pos);
+            Matrix trans = MatrixIdentity();
+            matrix::x(trans, side);
+            matrix::y(trans, forward);
+            matrix::z(trans, up);
+            matrix::position(trans, pos);
+            
+            world.bikes[0].transform = trans;
+        }
+        
+        auto pos = matrix::position(world.bikes[0].transform);
+        camera.position = Vector3 { pos.x, pos.y, pos.z } + Vector3 { 0.0f, -12.0f, 6.0f };
+        camera.target   = Vector3 { pos.x, pos.y, pos.z };
 
         BeginMode3D(camera);
         {
